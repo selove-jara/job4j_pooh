@@ -34,7 +34,7 @@ public class TopicSchema implements Schema {
                 String messageText = messages.poll(); // Полим сообщение
 
                 if (messageText != null) {
-                    messagesProcessed = true; // Если есть сообщения, значит мы их обрабатываем
+                    messagesProcessed = true;
                     var receiversForTopic = receivers.get(topicKey);
                     for (Receiver receiver : receiversForTopic) {
                         receiver.receive(messageText);
@@ -43,10 +43,9 @@ public class TopicSchema implements Schema {
             }
 
             if (!messagesProcessed) {
-                // Если не было сообщений, которые нужно было обработать, ждем новых
-                condition.off(); // Отключаем сигнализацию
+                condition.off();
                 try {
-                    condition.await(); // Ожидаем новых сообщений или подписчиков
+                    condition.await();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
